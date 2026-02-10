@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIRES - Национальный НИИ возобновляемых источников энергии</title>
+    
+    <!-- Библиотеки -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com">
+    <script src="https://unpkg.com"></script>
+    <script src="https://cdnjs.cloudflare.com"></script>
+    <script src="https://cdn.jsdelivr.net"></script>
+
+    <style>
+        html { scroll-behavior: smooth; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .tab-btn.active { border-left: 4px solid #059669; background-color: #f0fdf4; color: #059669; font-weight: bold; }
+        
+        .hero-bg { 
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('hero-main.jpg'); 
+            background-repeat: no-repeat; background-position: center top; background-size: cover;
+        }
+
+        [data-i18n] { transition: opacity 0.3s ease-in-out; }
+        .fade-out { opacity: 0; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spinner { display: inline-block; width: 1rem; height: 1rem; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 0.8s linear infinite; margin-right: 0.5rem; vertical-align: middle; }
+
+        body.a11y-mode { font-size: 1.25rem !important; }
+        body.a11y-mode * { background-color: #000 !important; color: #fff !important; border-color: #fff !important; background-image: none !important; }
+        body.a11y-mode img { filter: grayscale(1) invert(1); }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-900 transition-all duration-300 text-left">
+
+    <!-- НАВИГАЦИЯ -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <img src="logo.png" alt="NIRES" onerror="this.src='https://via.placeholder.com'" class="h-12 w-auto">
+                <div class="border-l pl-4 border-gray-200 hidden sm:block">
+                    <div class="font-bold text-lg leading-none text-green-700 uppercase">NIRES</div>
+                    <div class="text-[9px] text-gray-400 uppercase tracking-tighter mt-1" data-i18n="logo-sub">Национальный НИИ ВИЭ</div>
+                </div>
+            </div>
+            <div class="hidden lg:flex space-x-6 font-bold text-[11px] uppercase tracking-widest text-gray-600">
+                <a href="#about" class="hover:text-green-600" data-i18n="nav-about">Об институте</a>
+                <a href="#news" class="hover:text-green-600" data-i18n="nav-news">Новости</a>
+                <a href="#training" class="hover:text-green-600" data-i18n="nav-training">Учебный центр</a>
+                <a href="#contacts" class="hover:text-green-600" data-i18n="nav-contacts">Контакты</a>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button onclick="toggleAccessibility()" class="bg-gray-800 text-white p-2 rounded-lg text-[10px] font-black uppercase"><i class="fas fa-eye mr-1"></i> <span data-i18n="a11y-btn">Доступность</span></button>
+                <select onchange="changeLanguage(this.value)" id="langSelect" class="bg-gray-100 rounded p-2 text-xs font-bold outline-none border-none shadow-sm">
+                    <option value="ru">RU</option><option value="uz">UZ</option><option value="en">EN</option>
+                </select>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero-bg h-[450px] flex items-center text-white relative">
+        <div class="container mx-auto px-4 z-10">
+            <div class="max-w-3xl bg-black/30 p-10 rounded-[2.5rem] backdrop-blur-md">
+                <h1 class="text-5xl font-black mb-4 uppercase tracking-tighter" data-i18n="hero-title">Энергия будущего</h1>
+                <p class="text-xl mb-8" data-i18n="hero-sub">Солнце • Ветер • Зеленый водород</p>
+                <a href="#training" class="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-2xl font-bold transition shadow-xl inline-block" data-i18n="hero-btn">Обучение</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ОБ ИНСТИТУТЕ -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-4 flex flex-col lg:flex-row gap-12">
+            <!-- Левое меню -->
+            <div class="lg:w-1/3">
+                <div class="sticky top-28 bg-gray-50 rounded-3xl p-6 border border-gray-100">
+                    <nav class="flex flex-col space-y-1">
+                        <button onclick="openTab(event, 'info')" class="tab-btn active text-left px-5 py-4 rounded-xl font-bold" data-i18n="sub-info">О нас</button>
+                        <button onclick="openTab(event, 'team')" class="tab-btn text-left px-5 py-4 rounded-xl font-bold" data-i18n="sub-team">Руководство</button>
+                        <button onclick="openTab(event, 'struct')" class="tab-btn text-left px-5 py-4 rounded-xl font-bold" data-i18n="sub-struct">Структура</button>
+                        <button onclick="openTab(event, 'partners')" class="tab-btn text-left px-5 py-4 rounded-xl font-bold" data-i18n="sub-partners">Партнёры</button>
+                        <button onclick="openTab(event, 'science')" class="tab-btn text-left px-5 py-4 rounded-xl font-bold" data-i18n="sub-science">Наука</button>
+                        <button onclick="event, openTab(event, 'services')" class="tab-btn text-left px-5 py-4 rounded-xl font-bold" data-i18n="sub-services">Услуги</button>
+                        <button onclick="openTab(event, 'jobs')" class="tab-btn text-left px-5 py-4 rounded-xl font-bold" data-i18n="sub-jobs">Вакансии</button>
+                        <button onclick="openTab(event, 'docs')" class="tab-btn text-left px-5 py-4 rounded-xl font-bold" data-i18n="sub-docs">Документы</button>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Правый контент -->
+            <div class="lg:w-2/3 text-left">
+                <!-- ВКЛАДКА: О НАС -->
+                <div id="info" class="tab-content active space-y-8">
+                    <h2 class="text-3xl font-black uppercase text-green-700" data-i18n="sub-info">О ННИИВИЭ</h2>
+                    <div class="space-y-4 text-gray-700 leading-relaxed text-justify">
+                        <p class="font-bold text-lg text-gray-900" data-i18n="about-p1">Национальный научно-исследовательский институт возобновляемых источников энергии при Министерстве энергетики Республики Узбекистан.</p>
+                        <p data-i18n="about-p2">9 апреля 2021 года был подписан указ Президента Республики Узбекистан № 5063 "О мерах по развитию возобновляемой и водородной энергетики в Республике Узбекистан", на основе которого был создан Институт.</p>
+                        <p data-i18n="about-p3">Согласно данному указу, на базе ООО «Международный институт солнечной энергии» Академии наук РУз, при Министерстве энергетики был организован Институт, с созданием в его структуре Центра водородной энергетики и Лаборатории испытаний и сертификации.</p>
+                    </div>
+                    <div class="bg-gray-50 p-8 rounded-[2.5rem] border">
+                        <h3 class="text-xl font-black uppercase mb-6 flex items-center" data-i18n="about-tasks-title"><i class="fas fa-tasks text-green-600 mr-3"></i> Основные задачи</h3>
+                        <ul class="space-y-3 text-sm text-gray-600 font-medium">
+                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3 shrink-0"></i><span data-i18n="task-1">Расширение использования ВИЭ и развитие водородной энергетики.</span></li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3 shrink-0"></i><span data-i18n="task-2">Внедрение методов преобразования энергии в высокотехнологичных отраслях.</span></li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3 shrink-0"></i><span data-i18n="task-3">Разработка стандартов в соответствии с международными нормами.</span></li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3 shrink-0"></i><span data-i18n="task-4">Сотрудничество с международными научными центрами.</span></li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3 shrink-0"></i><span data-i18n="task-5">Связь науки с производством и подготовка кадров.</span></li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-3 shrink-0"></i><span data-i18n="task-6">Сертификация оборудования и технологий ВИЭ.</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- ВКЛАДКА: СТРУКТУРА (ДЕРЕВО) -->
+                <div id="struct" class="tab-content">
+                    <h2 class="text-3xl font-black uppercase mb-10" data-i18n="sub-struct">Структура</h2>
+                    <div class="relative flex flex-col items-center">
+                        <div class="bg-green-700 text-white p-6 rounded-2xl w-64 text-center z-10 font-bold uppercase shadow-xl" data-i18n="s-dir">Директор</div>
+                        <div class="w-px h-10 bg-green-200"></div>
+                        <div class="grid lg:grid-cols-3 gap-4 w-full">
+                            <div class="bg-white p-4 border-t-4 border-green-500 rounded-xl shadow-sm text-center font-bold text-xs uppercase" data-i18n="s-dep-1">Администрация</div>
+                            <div class="bg-white p-4 border-t-4 border-blue-500 rounded-xl shadow-sm text-center font-bold text-xs uppercase" data-i18n="s-dep-2">Научные Лаборатории</div>
+                            <div class="bg-white p-4 border-t-4 border-orange-500 rounded-xl shadow-sm text-center font-bold text-xs uppercase" data-i18n="s-dep-3">Учебный центр</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ОСТАЛЬНЫЕ ВКЛАДКИ -->
+                <div id="team" class="tab-content"><h2 class="text-3xl font-black uppercase mb-6" data-i18n="sub-team">Руководство</h2><div class="p-6 bg-gray-50 rounded-3xl border flex items-center space-x-6"><div class="w-20 h-20 bg-gray-200 rounded-full"></div><div><h4 class="text-xl font-bold">Алимов А.А.</h4><p class="text-green-600 font-bold" data-i18n="dir-post">Директор института</p></div></div></div>
+                <div id="partners" class="tab-content"><h2 class="text-3xl font-black uppercase mb-6" data-i18n="sub-partners">Партнёры</h2><div class="flex gap-8 opacity-40 grayscale"><img src="masdar.png" alt="Masdar" class="h-10"> <img src="giz.png" alt="GIZ" class="h-10"></div></div>
+                <div id="science" class="tab-content"><h2 class="text-3xl font-black uppercase mb-4" data-i18n="sub-science">Наука</h2><p class="text-gray-600" data-i18n="sci-pat">Более 15 патентов на ВИЭ установки.</p></div>
+                <div id="services" class="tab-content"><h2 class="text-3xl font-black uppercase mb-4" data-i18n="sub-services">Услуги</h2><ul class="list-disc pl-5 text-gray-600"><li>Энергоаудит</li><li>Проектирование ФЭС</li></ul></div>
+                <div id="jobs" class="tab-content"><h2 class="text-3xl font-black uppercase mb-4" data-i18n="sub-jobs">Вакансии</h2><p class="text-blue-500 font-bold" data-i18n="no-jobs">На данный момент вакансий нет.</p></div>
+                <div id="docs" class="tab-content"><h2 class="text-3xl font-black uppercase mb-6" data-i18n="sub-docs">Документы</h2><div class="p-4 border rounded-xl flex justify-between items-center"><span class="font-bold text-sm" data-i18n="d1-title">Закон о ВИЭ 2026</span><i class="fas fa-file-pdf text-red-500 text-2xl"></i></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- НОВОСТИ -->
+    <section id="news" class="py-20 bg-gray-50 text-left">
+        <div class="container mx-auto px-4 grid lg:grid-cols-3 gap-12">
+            <div class="lg:col-span-2 space-y-8">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-4xl font-black uppercase" data-i18n="nav-news">Новости</h2>
+                    <button onclick="openModal('archive')" class="text-green-600 font-bold border-b-2 border-green-600" data-i18n="all-news-btn">Все новости</button>
+                </div>
+                <article class="bg-white p-8 rounded-[2.5rem] shadow-sm border-l-8 border-green-500 hover:shadow-md transition">
+                    <span class="text-green-600 font-bold text-xs uppercase">10.02.2026</span>
+                    <h4 class="text-2xl font-black mt-3 mb-4" data-i18n="n1-h">Запуск водородного полигона</h4>
+                    <p class="text-gray-500" data-i18n="n1-t">Начались испытания первых отечественных систем хранения водорода.</p>
+                </article>
+            </div>
+            <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border">
+                <h4 class="font-black mb-6 uppercase flex justify-between"><span data-i18n="cal-title">События</span> <span class="text-green-600">Фев 2026</span></h4>
+                <div class="grid grid-cols-7 gap-2 text-center text-xs font-bold">
+                    <div class="py-2 opacity-20">1</div><div class="py-2 opacity-20">2</div><div class="py-2 opacity-20">3</div><div class="py-2 opacity-20">4</div>
+                    <div onclick="openModal('ev5')" class="py-2 bg-green-500 text-white rounded-lg cursor-pointer">5</div>
+                    <div class="py-2">6</div><div class="py-2">7</div><div class="py-2">8</div><div class="py-2">9</div>
+                    <div onclick="openModal('ev10')" class="py-2 bg-blue-500 text-white rounded-lg cursor-pointer">10</div>
+                </div>
+                <p class="mt-4 text-[9px] text-gray-400 uppercase font-bold" data-i18n="cal-hint">* Нажмите на дату для деталей</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ОБУЧЕНИЕ -->
+    <section id="training" class="py-20 bg-white border-y">
+        <div class="container mx-auto px-4 max-w-2xl text-left">
+            <div class="bg-white p-10 rounded-[3rem] shadow-2xl border">
+                <h2 class="text-3xl font-black mb-6 uppercase" data-i18n="nav-training">Учебный центр</h2>
+                <form id="trainingForm" class="space-y-4">
+                    <input type="text" name="name" placeholder="Имя" required class="w-full p-4 bg-gray-50 rounded-xl outline-none border focus:border-green-500">
+                    <input type="email" name="user_email" placeholder="Email" required class="w-full p-4 bg-gray-50 rounded-xl outline-none border focus:border-green-500">
+                    <input type="tel" id="phoneInput" name="phone" required class="w-full p-4 bg-gray-50 rounded-xl outline-none border focus:border-green-500">
+                    <select name="course" class="w-full p-4 bg-gray-50 rounded-xl border outline-none font-bold text-gray-600">
+                        <option value="Solar PV" data-i18n="c1">1. Установка и ТО солнечных фотостанций</option>
+                        <option value="Solar Water" data-i18n="c2">2. Установка и ТО солнечных водонагревателей</option>
+                        <option value="Energy Manager" data-i18n="c3">3. Энергетический менеджер</option>
+                        <option value="Buildings" data-i18n="c4">4. Энергоэффективность в зданиях</option>
+                        <option value="RES" data-i18n="c5">5. Использование ВИЭ</option>
+                    </select>
+                    <button type="submit" id="submitBtn" class="w-full bg-green-600 text-white font-black py-5 rounded-xl uppercase tracking-widest transition hover:bg-green-800">
+                        <span id="btnText" data-i18n="submit-btn">Отправить заявку</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- КОНТАКТЫ + QR + КАРТА -->
+    <section id="contacts" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="bg-gray-900 rounded-[3rem] overflow-hidden flex flex-col lg:flex-row shadow-2xl border border-gray-800 text-left">
+                <!-- Данные -->
+                <div class="lg:w-1/3 p-12 text-white space-y-8 flex flex-col justify-between">
+                    <div>
+                        <h2 class="text-4xl font-black mb-8 uppercase" data-i18n="nav-contacts">Контакты</h2>
+                        <div class="space-y-6">
+                            <p class="flex items-start"><i class="fas fa-map-marker-alt text-green-500 mr-4 mt-1"></i> <span data-i18n="footer-addr">г. Ташкент, ул. Ч. Айтматова, 2Б</span></p>
+                            <p class="text-2xl font-black">+998 71 231-10-00</p>
+                            <a href="https://www.google.com" target="_blank" class="bg-green-600 px-6 py-3 rounded-xl font-bold uppercase text-[10px] inline-block" data-i18n="get-route">Как доехать</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- QR Код -->
+                <div class="lg:w-1/6 bg-gray-800 flex flex-col items-center justify-center p-8 border-x border-gray-700">
+                    <div id="qrcode" class="p-2 bg-white rounded-xl"></div>
+                    <p class="text-[9px] text-green-400 font-bold mt-4 uppercase">nires.uz</p>
+                    <p class="text-[7px] text-gray-500 uppercase mt-1" data-i18n="qr-hint">Scan for vCard</p>
+                </div>
+                <!-- Карта -->
+                <div class="lg:w-1/2 h-[450px]">
+                    <iframe src="https://www.google.com" width="100%" height="100%" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ФУТЕР -->
+    <footer class="bg-gray-900 text-white pt-16 pb-10 border-t border-gray-800">
+        <div class="container mx-auto px-4">
+            <!-- Госссылки -->
+            <div class="grid md:grid-cols-3 gap-6 mb-16 text-left">
+                <a href="https://minenergy.uz" target="_blank" class="p-6 bg-gray-800 rounded-[2rem] hover:bg-green-600 transition flex items-center space-x-4">
+                    <i class="fas fa-university text-green-400"></i><span class="text-xs font-bold uppercase" data-i18n="foot-minenergy">Минэнерго РУз</span>
+                </a>
+                <a href="https://my.gov.uz" target="_blank" class="p-6 bg-gray-800 rounded-[2rem] hover:bg-blue-600 transition flex items-center space-x-4">
+                    <i class="fas fa-globe text-blue-400"></i><span class="text-xs font-bold uppercase" data-i18n="foot-gov">My.gov.uz</span>
+                </a>
+                <a href="https://anticorruption.uz" target="_blank" class="p-6 bg-gray-800 rounded-[2rem] hover:bg-red-600 transition flex items-center space-x-4">
+                    <i class="fas fa-shield-alt text-red-400"></i><span class="text-xs font-bold uppercase" data-i18n="foot-anticorr">Антикоррупция</span>
+                </a>
+            </div>
+            <div class="text-center opacity-30 text-[9px] font-black uppercase tracking-widest pt-10 border-t border-gray-800" data-i18n="foot-copy">© 2026 NIRES. Все права защищены.</div>
+        </div>
+    </footer>
+
+    <!-- МОДАЛКА -->
+    <div id="modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[100] hidden items-center justify-center p-4" onclick="this.classList.add('hidden')">
+        <div class="bg-white rounded-[2.5rem] p-10 max-w-lg w-full relative text-left" onclick="event.stopPropagation()">
+            <div id="modalBody"></div>
+            <button onclick="document.getElementById('modal').classList.add('hidden')" class="mt-8 w-full bg-gray-100 py-4 rounded-xl font-bold uppercase text-xs" data-i18n="modal-close">Закрыть</button>
+        </div>
+    </div>
+
+    <script>
+        // Инициализация
+        (function() { emailjs.init("YOUR_PUBLIC_KEY"); })();
+
+        const translations = {
+            ru: {
+                "logo-sub": "Национальный НИИ ВИЭ", "nav-about": "Об институте", "nav-news": "Новости", "nav-training": "Учебный центр", "nav-contacts": "Контакты", "a11y-btn": "Доступность",
+                "hero-title": "Энергия будущего", "hero-sub": "Солнце • Ветер • Зеленый водород", "hero-btn": "Обучение",
+                "sub-info": "О нас", "sub-team": "Руководство", "sub-struct": "Структура", "sub-partners": "Партнёры", "sub-science": "Наука", "sub-services": "Услуги", "sub-jobs": "Вакансии", "sub-docs": "Документы",
+                "about-p1": "Национальный научно-исследовательский институт возобновляемых источников энергии при Министерстве энергетики Республики Узбекистан.",
+                "about-p2": "9 апреля 2021 года был подписан указ Президента РУз № 5063, на основе которого создан Институт.",
+                "about-p3": "Согласно указу, на базе ООО «МИСЭ» при Министерстве энергетики был организован Институт с Центром водородной энергетики.",
+                "about-tasks-title": "Основные задачи", "task-1": "Развитие ВИЭ и водородной энергетики.", "task-2": "Внедрение методов преобразования энергии.", "task-3": "Разработка стандартов.", "task-4": "Международное сотрудничество.", "task-5": "Связь науки с производством.", "task-6": "Сертификация оборудования.",
+                "s-dir": "Директор", "s-dep-1": "Администрация", "s-dep-2": "Научные лаборатории", "s-dep-3": "Учебный центр", "dir-post": "Директор института", "no-jobs": "Вакансий нет.",
+                "nav-news": "Новости", "all-news-btn": "Все новости", "cal-title": "События", "cal-hint": "* Нажмите на дату для деталей", "modal-close": "Закрыть",
+                "n1-h": "Запуск водородного полигона", "n1-t": "Начались испытания первых систем.", "submit-btn": "Отправить заявку",
+                "c1": "1. Установка солнечных фотостанций", "c2": "2. Солнечные водонагреватели", "c3": "3. Энергетический менеджер", "c4": "4. Эффективность зданий", "c5": "5. Использование ВИЭ",
+                "foot-minenergy": "Минэнерго РУз", "foot-gov": "My.gov.uz", "foot-anticorr": "Антикоррупция", "get-route": "Маршрут", "qr-hint": "Сканируйте визитку", "footer-addr": "г. Ташкент, ул. Ч. Айтматова, 2Б", "foot-copy": "© 2026 NIRES. Все права защищены."
+            },
+            uz: {
+                "logo-sub": "Milliy ilmiy-tadqiqot instituti", "nav-about": "Institut haqida", "nav-news": "Yangiliklar", "nav-training": "O'quv markazi", "nav-contacts": "Kontaktlar", "a11y-btn": "Maxsus imkoniyat",
+                "hero-title": "Kelajak energiyasi", "hero-sub": "Quyosh • Shamol • Vodorod", "hero-btn": "Kurslar",
+                "sub-info": "Biz haqimizda", "sub-team": "Rahbariyat", "sub-struct": "Tuzilma", "sub-partners": "Hamkorlar", "sub-science": "Ilm-fan", "sub-services": "Xizmatlar", "sub-jobs": "Vakansiyalar", "sub-docs": "Hujjatlar",
+                "about-p1": "O‘zbekiston Energetika vazirligi huzuridagi Qayta tiklanuvchi energiya manbalari milliy ilmiy-tadqiqot instituti.",
+                "about-p2": "2021-yil 9-aprelda Prezidentning 5063-sonli qarori imzolandi, uning asosida Institut tashkil etildi.",
+                "about-p3": "Qarorga muvofiq, Energetika vazirligi huzurida Vodorod energetikasi markazi bilan Institut tashkil etildi.",
+                "about-tasks-title": "Asosiy vazifalar", "task-1": "QTE va vodorod energetikasini rivojlantirish.", "task-2": "Energiyani aylantirish usullarini joriy etish.", "task-3": "Standartlarni ishlab chiqish.", "task-4": "Xalqaro hamkorlik.", "task-5": "Ilm-fan va ishlab chiqarish aloqasi.", "task-6": "Uskunalarni sertifikatlash.",
+                "s-dir": "Direktor", "s-dep-1": "Ma'muriyat", "s-dep-2": "Ilmiy laboratoriyalar", "s-dep-3": "O'quv markazi", "dir-post": "Institut direktori", "no-jobs": "Vakansiyalar mavjud emas.",
+                "nav-news": "Yangiliklar", "all-news-btn": "Barcha yangiliklar", "cal-title":
